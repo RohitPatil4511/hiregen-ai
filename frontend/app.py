@@ -306,14 +306,12 @@ with st.sidebar:
     st.markdown("<div style='color:#6b7280;font-size:0.8rem;margin-bottom:1.5rem'>Multi-Agent Recruitment Copilot</div>", unsafe_allow_html=True)
     st.markdown("---")
     pages = ["🔍  Single Analysis", "📊  Compare Candidates", "💬  Recruiter Chatbot"]
-if os.getenv("USE_GROQ", "false").lower() != "true":
-    pages.append("🎤  Voice Interview")  # Voice only available locally
-
-page = st.radio("", pages, label_visibility="collapsed")
+    if os.getenv("USE_GROQ", "false").lower() != "true":
+        pages.append("🎤  Voice Interview")  # Voice only available locally
+    page = st.radio("", pages, label_visibility="collapsed")
     st.markdown("---")
     st.markdown("<div style='color:#6b7280;font-size:0.75rem'>Powered by</div>", unsafe_allow_html=True)
     st.markdown("<div style='color:#9ca3af;font-size:0.8rem'>Llama 3.2 · LangGraph · FAISS</div>", unsafe_allow_html=True)
-
 # ============================================================
 # PAGE 1: SINGLE ANALYSIS
 # ============================================================
