@@ -1,0 +1,13 @@
+Name: Amit Singh
+Email: amit.singh@email.com
+
+Skills:
+Python, Flask, MySQL, Git, HTML, CSS, JavaScript
+
+Experience:
+- Junior Developer at WebStudio (2023-2024): Built simple Flask APIs.
+- Intern at TechStart (2022-2023): Assisted with frontend development.
+
+Education: B.Sc in IT, Mumbai University, 2022
+
+Experience: 1 year

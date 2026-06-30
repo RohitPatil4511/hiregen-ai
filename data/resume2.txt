@@ -1,0 +1,13 @@
+Name: Priya Mehta
+Email: priya.mehta@email.com
+
+Skills:
+Python, Django, PostgreSQL, Docker, Kubernetes, AWS, REST APIs, Redis, CI/CD
+
+Experience:
+- Senior Backend Developer at CloudCorp (2019-2024): Led a team of 5 engineers. Built microservices on Kubernetes.
+- Backend Developer at DataSoft (2017-2019): Built Django REST APIs with PostgreSQL.
+
+Education: M.Tech in Software Engineering, IIT Bombay, 2017
+
+Experience: 7 years

@@ -1,0 +1,23 @@
+Job Title: Python Backend Developer
+
+We are looking for an experienced Python Backend Developer to join our team.
+
+Requirements:
+- 3+ years of experience with Python
+- Strong knowledge of FastAPI or Django
+- Experience with PostgreSQL and Redis
+- Familiarity with Docker and Kubernetes
+- Understanding of REST APIs and microservices
+- Experience with AWS or any cloud platform
+
+Nice to have:
+- Knowledge of machine learning with scikit-learn
+- Experience with Kafka or RabbitMQ
+
+Education: Bachelor's degree in Computer Science or related field
+
+Responsibilities:
+- Design and build scalable backend services
+- Write clean, maintainable code
+- Collaborate with frontend and DevOps teams
+- Perform code reviews

@@ -1,0 +1,18 @@
+Name: Rahul Sharma
+Email: rahul.sharma@email.com
+
+Summary:
+Experienced Python developer with 4 years of backend development experience.
+
+Skills:
+Python, FastAPI, PostgreSQL, Docker, REST APIs, Git, Linux, Redis, AWS S3
+
+Experience:
+- Backend Developer at TechCorp (2021-2024): Built microservices using FastAPI and PostgreSQL. Deployed on AWS using Docker.
+- Junior Developer at StartupXYZ (2020-2021): Developed REST APIs using Flask and MySQL.
+
+Education:
+B.Tech in Computer Science, VIT University, 2020
+
+Certifications:
+AWS Certified Developer
