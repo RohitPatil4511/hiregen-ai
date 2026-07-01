@@ -24,34 +24,40 @@ async def analyze(
     jd_file: UploadFile = File(...),
     resume_file: UploadFile = File(...)
 ):
-    from backend.agents.jd_agent import extract_jd
-    from backend.agents.resume_agent import extract_resume
-    from backend.agents.matcher_agent import calculate_fit_score
-    from backend.agents.skill_gap_agent import identify_skill_gaps
-    from backend.agents.interview_agent import generate_questions
+    try:
+        from backend.agents.jd_agent import extract_jd
+        from backend.agents.resume_agent import extract_resume
+        from backend.agents.matcher_agent import calculate_fit_score
+        from backend.agents.skill_gap_agent import identify_skill_gaps
+        from backend.agents.interview_agent import generate_questions
 
-    jd_path = f"{UPLOAD_DIR}/{jd_file.filename}"
-    resume_path = f"{UPLOAD_DIR}/{resume_file.filename}"
+        jd_path = f"{UPLOAD_DIR}/{jd_file.filename}"
+        resume_path = f"{UPLOAD_DIR}/{resume_file.filename}"
 
-    with open(jd_path, "wb") as f:
-        shutil.copyfileobj(jd_file.file, f)
-    with open(resume_path, "wb") as f:
-        shutil.copyfileobj(resume_file.file, f)
+        with open(jd_path, "wb") as f:
+            shutil.copyfileobj(jd_file.file, f)
+        with open(resume_path, "wb") as f:
+            shutil.copyfileobj(resume_file.file, f)
 
-    jd_data = extract_jd(jd_path)
-    resume_data = extract_resume(resume_path)
-    match_result = calculate_fit_score(jd_data, resume_data)
-    gap_result = identify_skill_gaps(jd_data, resume_data, match_result)
-    questions = generate_questions(jd_data, resume_data, gap_result)
+        jd_data = extract_jd(jd_path)
+        resume_data = extract_resume(resume_path)
+        match_result = calculate_fit_score(jd_data, resume_data)
+        gap_result = identify_skill_gaps(jd_data, resume_data, match_result)
+        questions = generate_questions(jd_data, resume_data, gap_result)
 
-    return {
-        "jd": jd_data,
-        "resume": resume_data,
-        "match": match_result,
-        "gaps": gap_result,
-        "questions": questions.get("questions", [])
-    }
-
+        return {
+            "jd": jd_data,
+            "resume": resume_data,
+            "match": match_result,
+            "gaps": gap_result,
+            "questions": questions.get("questions", [])
+        }
+    except Exception as e:
+        import traceback
+        error_detail = traceback.format_exc()
+        print(f"ERROR in /analyze: {error_detail}")
+        from fastapi import HTTPException
+        raise HTTPException(status_code=500, detail=str(e))
 @app.post("/analyze-multiple")
 async def analyze_multiple(
     jd_file: UploadFile = File(...),
