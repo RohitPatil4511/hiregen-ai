@@ -57,19 +57,9 @@ A recruiter uploads a **Job Description** and one or more **Resumes**. The syste
                     │
                     ▼
         LangGraph Multi-Agent Workflow
-┌────────────────────────────────────────┐
-│                                          │
-│  1. JD Agent          → extracts skills  │
-│  2. Resume Agent      → parses + embeds  │
-│  3. Match Agent       → fit score (RAG)  │
-│  4. Skill Gap Agent   → gaps + advice    │
-│  5. Interview Agent   → generates Qs     │
-│  6. Evaluator Agent   → scores answers   │
-│                                          │
-└────────────────────────────────────────┘
-│
-▼
-Final Hiring Report (+ PDF)
+                   │
+                   ▼
+        Final Hiring Report (+ PDF)
 
 ### Agent Pipeline Detail
 
