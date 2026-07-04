@@ -1,4 +1,4 @@
----
+yaml---
 title: HireGen AI
 emoji: 🤖
 colorFrom: purple
@@ -47,3 +47,202 @@ A recruiter uploads a **Job Description** and one or more **Resumes**. The syste
 ---
 
 ## 🏗️ Architecture
+                Recruiter
+                    │
+                    ▼
+          Streamlit UI (Frontend)
+                    │
+                    ▼
+           FastAPI (Backend API)
+                    │
+                    ▼
+        LangGraph Multi-Agent Workflow
+┌────────────────────────────────────────┐
+│                                          │
+│  1. JD Agent          → extracts skills  │
+│  2. Resume Agent      → parses + embeds  │
+│  3. Match Agent       → fit score (RAG)  │
+│  4. Skill Gap Agent   → gaps + advice    │
+│  5. Interview Agent   → generates Qs     │
+│  6. Evaluator Agent   → scores answers   │
+│                                          │
+└────────────────────────────────────────┘
+│
+▼
+Final Hiring Report (+ PDF)
+
+### Agent Pipeline Detail
+
+| Step | Agent | Input | Output |
+|---|---|---|---|
+| 1 | **JD Agent** | Job description (PDF/TXT) | Required skills, experience level, responsibilities |
+| 2 | **Resume Agent** | Candidate resume(s) | Structured profile + FAISS embedding for RAG |
+| 3 | **Match Agent** | JD + Resume data | Fit score (semantic + keyword, 0–100) |
+| 4 | **Skill Gap Agent** | Match results | Missing skills, weak areas, recommendations |
+| 5 | **Interview Agent** | Gaps + candidate profile | 6–8 targeted interview questions |
+| 6 | **Evaluator Agent** | Candidate answers | Per-question score, feedback, final report |
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| **LLM** | Llama 3.2 (via [Ollama](https://ollama.com), local) / Groq API (cloud deployment) |
+| **Agent Orchestration** | LangGraph + LangChain |
+| **RAG / Vector Search** | FAISS + Sentence Transformers (`all-MiniLM-L6-v2`) |
+| **Backend** | FastAPI |
+| **Frontend** | Streamlit + Plotly |
+| **Voice AI** | Faster-Whisper (speech-to-text) |
+| **PDF Generation** | ReportLab |
+| **Deployment** | Docker, Docker Compose, Hugging Face Spaces |
+
+---
+
+## 🚀 Quick Start (Local — Ollama)
+
+### Prerequisites
+- Python 3.11+
+- [Ollama](https://ollama.com) installed
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/RohitPatil4511/hiregen-ai.git
+cd hiregen-ai
+```
+
+### 2. Set up a virtual environment
+```bash
+python -m venv venv
+
+# Windows
+venv\Scripts\activate
+
+# Mac/Linux
+source venv/bin/activate
+```
+
+### 3. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Pull the Llama model
+```bash
+ollama pull llama3.2
+```
+
+### 5. Run the app
+
+**Terminal 1 — Backend:**
+```bash
+uvicorn backend.main:app --reload
+```
+
+**Terminal 2 — Frontend:**
+```bash
+streamlit run frontend/app.py
+```
+
+Open your browser at **`http://localhost:8501`**
+
+---
+
+## 🐳 Run with Docker
+
+```bash
+docker-compose up
+```
+
+This spins up FastAPI, Streamlit, and Ollama in separate containers automatically.
+
+---
+
+## ☁️ Cloud Deployment (Groq API)
+
+For deployments where running Ollama isn't practical (e.g. free-tier hosting), the app automatically switches to the [Groq API](https://console.groq.com) — same Llama model family, hosted inference, no local GPU/CPU load.
+
+```bash
+export USE_GROQ=true
+export GROQ_API_KEY=your_key_here
+```
+
+The app detects this automatically via `backend/utils/llm.py` — no code changes needed between local and cloud modes.
+
+---
+
+## 📂 Project Structure
+hiregen-ai/
+│
+├── backend/
+│   ├── main.py                 # FastAPI app + routes
+│   ├── agents/
+│   │   ├── jd_agent.py         # Extracts JD requirements
+│   │   ├── resume_agent.py     # Parses resumes + RAG embedding
+│   │   ├── matcher_agent.py    # Fit scoring + candidate ranking
+│   │   ├── skill_gap_agent.py  # Skill gap analysis
+│   │   ├── interview_agent.py  # Interview question generation
+│   │   ├── evaluator_agent.py  # Answer evaluation
+│   │   └── chatbot_agent.py    # RAG recruiter chatbot
+│   ├── graph/
+│   │   └── workflow.py         # LangGraph pipeline definition
+│   ├── rag/
+│   │   ├── embeddings.py       # Sentence Transformer embeddings
+│   │   ├── vectorstore.py      # FAISS index management
+│   │   └── retriever.py        # Semantic retrieval
+│   └── utils/
+│       ├── parser.py           # PDF/TXT parsing
+│       ├── prompts.py          # LLM prompt templates
+│       ├── llm.py              # Ollama/Groq model loader
+│       ├── voice.py            # Whisper speech-to-text
+│       └── pdf_report.py       # PDF report generation
+│
+├── frontend/
+│   └── app.py                  # Streamlit UI (4 pages)
+│
+├── data/                       # Uploads + vector store (gitignored)
+├── requirements.txt
+├── Dockerfile
+├── docker-compose.yml
+└── README.md
+
+---
+
+## 📋 Usage Walkthrough
+
+1. **Single Analysis** — Upload one JD + one resume → get fit score, matched/missing skills, recommendations → take the AI interview → download PDF report
+2. **Compare Candidates** — Upload one JD + multiple resumes → see a ranked leaderboard of all candidates
+3. **Recruiter Chatbot** — Ask questions about any candidate you've already analyzed
+4. **Voice Interview** *(local only)* — Speak your interview answers instead of typing
+
+---
+
+## 🗺️ Roadmap
+
+- [x] Multi-agent LangGraph pipeline
+- [x] RAG-based resume matching
+- [x] Voice AI interviews (Whisper)
+- [x] Recruiter chatbot
+- [x] PDF report generation
+- [x] Docker + cloud deployment support
+- [ ] PostgreSQL persistence + recruiter accounts
+- [ ] Multi-language resume support
+- [ ] ATS (Applicant Tracking System) integration
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 👤 Author
+
+**Rohit Patil**
+AI/ML Engineer
+[LinkedIn](https://www.linkedin.com/in/rohit-patil-261189355/) · [GitHub](https://github.com/RohitPatil4511) · rohitpatil89045@gmail.com
+
+---
+
+<p align="center">Built with LangGraph, Llama 3, and a lot of debugging 🚀</p>
