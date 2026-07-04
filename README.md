@@ -1,4 +1,4 @@
-yaml---
+---
 title: HireGen AI
 emoji: 🤖
 colorFrom: purple
